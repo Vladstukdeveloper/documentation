@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Документація для модуля group_chat_handler.py Telegram-бота">
+    <meta name="author" content="xAI Assistant">
+    <meta name="date" content="2025-04-28">
+    <title>Документація: Управління груповим чатом</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1e1e2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2a2a3c;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #7289da;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            color: #b0b0c0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #7289da;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 40px;
+            flex: 1;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #7289da;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #b0b0c0;
+        }
+
+        h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: #7289da;
+            margin: 20px 0 10px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid #7289da;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+        }
+
+        h4 {
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        ul li, ol li {
+            margin-bottom: 10px;
+        }
+
+        code {
+            background-color: #2a2a3c;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #ff79c6;
+        }
+
+        pre {
+            background-color: #2a2a3c;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        a {
+            color: #7289da;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #7289da;
+            text-align: center;
+            color: #b0b0c0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Зміст</h2>
+            <ul>
+                <li><a href="#overview">Огляд</a></li>
+                <li><a href="#features">Основні можливості</a></li>
+                <li><a href="#data-structure">Структура даних</a></li>
+                <li><a href="#functions">Основні функції</a></li>
+                <li><a href="#usage">Використання</a></li>
+                <li><a href="#limitations">Обмеження</a></li>
+                <li><a href="#setup">Налаштування</a></li>
+                <li><a href="#examples">Приклад роботи</a></li>
+                <li><a href="#logging">Логування</a></li>
+            </ul>
+        </nav>
+        <div class="content">
+            <header>
+                <h1>Документація: Управління груповим чатом</h1>
+                <p>Цей документ описує функціонал модуля <code>group_chat_handler.py</code> для частини Telegram-бота, який обробляє повідомлення та команди в групових чатах.</p>
+            </header>
+            <section id="overview">
+                <h2>Огляд</h2>
+                <p>Модуль <code>group_chat_handler.py</code> відповідає за обробку повідомлень і команд у групових чатах Telegram за допомогою бібліотеки <code>telebot</code> та інтеграцію з ШІ (<code>g4f</code>). Він підтримує керування контекстом чату, модерацію (включаючи мут, заборонені слова)
+                <p>Дата: 28 квітня 2025</p>
+            </section>
+            <section id="features">
+                <h2>Основні можливості</h2>
+                <ol>
+                    <li><strong>Обробка групових повідомлень</strong>:
+                        <ul>
+                            <li>Реакція на прямі звернення до бота (наприклад, "Збірник, ...") або відповіді на повідомлення бота.</li>
+                            <li>Контекст чату зберігається до 50 повідомлень або 1 година.</li>
+                            <li>Перевірка на заборонені слова з видаленням повідомлення.</li>
+                            <li>Обробка образ на адресу бота з мутом (2 хвилини).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Модерація</strong>:
+                        <ul>
+                            <li>Мут користувачів адміністраторами ("Збірник, замуть @username [час]"). Підтримується різне формулювання.</li>
+                            <li>Зняття або зменшення мута.</li>
+                            <li>Управління забороненими словами через <code>/manage_forbidden_words</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Інтеграція з ШІ</strong>:
+                        <ul>
+                            <li>Відповіді через <code>g4f</code> з моделлю <code>gpt-4o-mini</code>.</li>
+                            <li>Ліміти: 10 запитів (звичайні), 100 (преміум) на день (налаштовується у приватному чаті з ботом).</li>
+                            <li>Підтримка контексту та узагальнення історії чату.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Управління користувачами</strong>:
+                        <ul>
+                            <li>Відстеження статусу (учасник, адмін, власник).</li>
+                            <li>Оновлення даних у <code>group_members.json</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Шифрування даних</strong>:
+                        <ul>
+                            <li>Шифрування <code>userdata.json</code>, <code>blocked_users.json</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Обмеження запитів</strong>:
+                        <ul>
+                            <li>Rate limit: 10 запитів за 60 секунд.</li>
+                            <li>Лічильник у <code>userdata.json</code>.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+            <section id="data-structure">
+                <h2>Структура даних</h2>
+                <h3>1. <code>userdata.json</code></h3>
+                <p>Інформація про користувачів:</p>
+                <ul>
+                    <li><code>request_history</code>: список часових міток.</li>
+                    <li><code>remaining_ai_requests</code>: залишок запитів.</li>
+                    <li><code>premium_status</code>: статус преміум.</li>
+                    <li><code>ban_until</code>: дата бану.</li>
+                </ul>
+                <h3>2. <code>group_members.json</code></h3>
+                <p>Дані учасників груп:</p>
+                <ul>
+                    <li>Ключ: <code>chat_id</code>.</li>
+                    <li>Поля: <code>username</code>, <code>last_seen</code>.</li>
+                </ul>
+                <h3>3. <code>forbidden_words.json</code></h3>
+                <p>Списки заборонених слів:</p>
+                <ul>
+                    <li>Ключ: <code>chat_id</code>.</li>
+                    <li>Значення: список слів.</li>
+                </ul>
+                <h3>4. <code>blocked_users.json</code></h3>
+                <p>Заблоковані користувачі:</p>
+                <ul>
+                    <li>Поля: <code>username</code>, <code>ban_until</code>, <code>reason</code>.</li>
+                </ul>
+                <h3>5. <code>GROUP_CHAT_CONTEXT</code></h3>
+                <p>Контекст чату в пам’яті:</p>
+                <ul>
+                    <li>Ключ: <code>chat_id</code>.</li>
+                    <li>Значення: <code>deque</code> з полями <code>role</code>, <code>content</code>, <code>username</code>.</li>
+                </ul>
+            </section>
+            <section id="functions">
+                <h2>Основні функції</h2>
+                <h3>Обробка повідомлень</h3>
+                <ul>
+                    <li><code>handle_group_message(message)</code>: обробка повідомлень, модерація, ШІ-запити.</li>
+                </ul>
+                <h3>Модерація</h3>
+                <ul>
+                    <li><code>mute_user(...)</code>: мут користувача.</li>
+                    <li><code>unmute_or_reduce_mute(...)</code>: зняття/зменшення мута.</li>
+                    <li><code>manage_forbidden_words_command(...)</code>: управління словами.</li>
+                </ul>
+                <h3>Інтеграція з ШІ</h3>
+                <ul>
+                    <li><code>get_group_ai_response(...)</code>: генерація відповідей ШІ.</li>
+                </ul>
+                <h3>Управління даними</h3>
+                <ul>
+                    <li><code>load_json(...)</code>, <code>save_json(...)</code>: робота з JSON.</li>
+                    <li><code>update_group_member(...)</code>: оновлення даних учасників.</li>
+                </ul>
+            </section>
+            <section id="usage">
+                <h2>Використання</h2>
+                <h3>Команди</h3>
+                <ul>
+                    <li><code>/manage_forbidden_words</code>: управління словами (адміни).</li>
+                    <li><code>/premium</code>, <code>/donate_photo</code>: лише в приваті.</li>
+                </ul>
+                <h3>Звернення до бота</h3>
+                <p>Приклади:</p>
+                <ul>
+                    <li><code>Збірник, що таке Python?</code></li>
+                    <li><code>Збірник, замуть @username 5хв</code></li>
+                </ul>
+            </section>
+            <section id="limitations">
+                <h2>Обмеження та зауваження</h2>
+                <ul>
+                    <li>Ліміти: 10 запитів/60 секунд, 10–100 запитів ШІ/день.</li>
+                    <li>Логи в <code>bot.log</code> з UTF-8.</li>
+                </ul>
+            </section>
+            <section id="setup">
+                <h2>Налаштування</h2>
+                <h3>Змінні середовища</h3>
+                <ul>
+                    <li><code>ENCRYPTION_KEY</code>: ключ шифрування.</li>
+                </ul>
+                <h3>Конфігурація</h3>
+                <ul>
+                    <li><code>config.py</code>: <code>TOKEN</code>, <code>AVAILABLE_MODELS</code>, <code>OFFENSIVE_WORDS</code>.</li>
+                </ul>
+                <h3>Залежності</h3>
+                <p><code>pip install pyTelegramBotAPI g4f cryptography python-dotenv pytz</code></p>
+            </section>
+            <section id="examples">
+                <h2>Приклад роботи</h2>
+                <h3>Додавання слова</h3>
+                <pre><code>
+/manage_forbidden_words
+-> Додати слово
+-> Введіть: тест
+-> Слово 'тест' додано.
+                </code></pre>
+                <h3>Мут</h3>
+                <pre><code>
+@Admin: Збірник, замуть @User 5
+-> @User мут на 5 хвилин.
+                </code></pre>
+            </section>
+            <section id="logging">
+                <h2>Логування</h2>
+                <p>Логи у <code>bot.log</code>:</p>
+                <pre><code>
+2025-04-28 12:00:00 - User 123456 used AI request. Remaining: 9
+                </code></pre>
+            </section>
+            <footer>
+                <p>Збірник, 28 квітня 2025</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
